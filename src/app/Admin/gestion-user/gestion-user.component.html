@@ -1,0 +1,142 @@
+<div class="text-center">
+  
+  <div class="main-card mb-3 card">  
+  <h3>Gestion des clients</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm">
+  <input type="search" class=" rounded"   style="margin-top: 20px;margin-left: 20px;"  [(ngModel)]="filterString" (ngModelChange)="onFilterChange()" placeholder="Recherche" aria-label="Search" aria-describedby="search-addon" />
+  </div> 
+  <div class="col-sm">
+    <button type="button" style="margin-top: 20px" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"  (click)="openModal(template)" >
+    Ajouter user
+     </button> 
+     </div> 
+ </div>
+
+<div   style="margin-top: 20px;"  >
+ <div class="main-card mb-3 card">
+   <div class="card-header">
+    <b>Liste des Clients</b>
+   </div>
+   <div class="table-responsive">
+     <table  class="align-middle mb-0 table table-borderless table-striped table-hover">
+      <thead >
+       <tr>
+        <th class="text-center">Id</th>
+        <th class="text-center">Name</th>
+        <th class="text-center">Username</th>
+        <th class="text-center">Email</th>
+        <th class="text-center">Role</th>
+        <th class="text-center">Action</th>
+       </tr>
+      </thead>
+
+      <tbody  *ngFor="let user of users |  async ">
+       <tr >
+        <td class="text-center">{{user.id}}</td>
+        <td class="text-center">{{user.name}}</td>
+        <td class="text-center">{{user.username}}</td>
+        <td class="text-center">{{user.email}}</td>
+        <td class="text-center"  *ngFor="let x of user.roles">{{x.name}}</td>
+        <td class="text-center">
+           <button type="button" class="mr-2 btn-icon btn-icon-only btn btn-success"  (click)="updateUser(user.id)"> <i class="pe-7s-note2
+            btn-icon-wrapper"> </i></button>
+            <button class="mr-2 btn-icon btn-icon-only btn btn-danger" (click)="deleteUser(user.id)">
+            <i class="pe-7s-trash btn-icon-wrapper"> </i>
+           </button>
+        </td>
+      </tr>
+      </tbody>
+     </table>
+   </div>
+   
+ </div>
+ 
+ </div>
+<!--Pagination-->
+ 
+
+<!--Ajout user-->
+<ng-template #template>
+
+  <div class="content-content">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- main app container -->
+    <div class="card m-3">
+      <h5 class="card-header">Create User</h5>
+      <div class="card-body">
+        <form [formGroup]="registerFormUser" (ngSubmit)="onSubmit()">
+
+          <div class="form-group col-12">
+            <label> Nom </label>
+            <input type="text" formControlName="name" placeholder=" Enter name" name="name" class="form-control" [(ngModel)]="user.name"
+              [ngClass]="{ 'is-invalid': submitted && u.name.errors }" />
+            <div *ngIf="submitted && u.name.errors" class="invalid-feedback">
+              <div *ngIf="u.name.errors.required">Nom obligatoire</div>
+            </div>
+          </div> 
+         
+          <!-- <div class="form-group col-12">
+            <label>Username </label>
+            <input type="text" formControlName="username" placeholder="Username" name="username" class="form-control" [(ngModel)]="user.username"
+              [ngClass]="{ 'is-invalid': submitted && u.username.errors }" />
+            <div *ngIf="submitted && u.username.errors" class="invalid-feedback">
+              <div *ngIf="u.username.errors.required">username obligatoire</div>
+            </div>
+          </div> -->
+
+          <div class="form-group col-12">
+            <label>Email</label>
+            <input type="text " formControlName="email" placeholder="Enter email" name="email" class="form-control" [(ngModel)]="user.email"
+              [ngClass]="{ 'is-invalid': submitted && u.email.errors }" />
+            <div *ngIf="submitted && u.email.errors" class="invalid-feedback">
+              <div *ngIf="u.email.errors.required">email obligatoire</div>
+            </div>
+          </div>
+
+          <div class="form-group col-12">
+            <label>Username</label>
+
+            <div class="input-group">
+           <div class="input-group-prepend"><span class="input-group-text">@</span></div>
+           <input type="text" class="form-control" formControlName="username" name="username" placeholder="username"  [(ngModel)]="user.username" 
+           [ngClass]="{ 'is-invalid': submitted && u.username.errors }" />
+           <div *ngIf="submitted && u.username.errors" class="invalid-feedback">
+             <div *ngIf="u.username.errors.required">username obligatoire</div>
+           </div>
+         </div>
+         </div>
+
+          <div class="form-group col-12">
+            <label>Password</label>
+            <input type="password " formControlName="password" placeholder="Enter password" name="password" class="form-control" [(ngModel)]="user.password" 
+              [ngClass]="{ 'is-invalid': submitted && u.password.errors }" />
+            <div *ngIf="submitted && u.password.errors" class="invalid-feedback">
+              <div *ngIf="u.password.errors.required">password obligatoire</div>
+            </div>
+          </div>
+        
+          <div class="position-relative form-group"><label for="exampleCustomMutlipleSelect">
+            Selectionnez le role:</label><select multiple="multiple" type="select" id="exampleCustomMutlipleSelect"
+                                  name="idrol" class="custom-select">
+            <option *ngFor="let role of roles | async" [ngValue]="role.id">{{role.name}}</option>
+        
+          </select></div>
+
+          <div class="text-center">
+            <button class="btn btn-primary mr-1"> Sauvegarder</button>
+            <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</ng-template>
+    
