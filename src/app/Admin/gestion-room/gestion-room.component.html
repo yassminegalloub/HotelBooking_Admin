@@ -101,14 +101,7 @@
       <pagination-controls class="paginate" style="color: blue;" (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
-  <div class="d-block p-4 text-center card-footer">
-    <button class="btn-pill btn-shadow btn-wide fsize-1 btn btn-dark btn-lg">
-      <span class="mr-2 opacity-7">
-          <i class="fa fa-cog fa-spin"></i>
-      </span>
-      <span class="mr-1">View Complete Report</span>
-    </button>
-  </div>
+ 
 </div>
 
 
@@ -126,7 +119,7 @@
          <form [formGroup]="registerFormUser" (ngSubmit)="onSubmit()">
 
           <div class="form-group col-12">
-            <label> Nom de chambre</label>
+            <label> Nom de chambre: </label>
             <input type="text" formControlName="name_room" placeholder=" Entrer le nom" name="name_room" class="form-control" [(ngModel)]="room.name_room"
               [ngClass]="{ 'is-invalid': submitted && u.name.errors }" />
             <div *ngIf="submitted && u.name.errors" class="invalid-feedback">
@@ -135,7 +128,7 @@
           </div> 
          
           <div class="form-group col-12">
-            <label>Details</label>
+            <label>Details: </label>
             <input type="text" formControlName="details" placeholder="Entrer les details" name="details" class="form-control" [(ngModel)]="room.details"
               [ngClass]="{ 'is-invalid': submitted && u.details.errors }" />
             <div *ngIf="submitted && u.details.errors" class="invalid-feedback">
@@ -144,7 +137,7 @@
           </div> 
 
           <div class="form-group col-12">
-            <label>Price</label>
+            <label>Price: </label>
             <input type="number" formControlName="price" placeholder="Entrer le prix" name="price" class="form-control" [(ngModel)]="room.price"
               [ngClass]="{ 'is-invalid': submitted && u.price.errors }" />
             <div *ngIf="submitted && u.price.errors" class="invalid-feedback">
@@ -154,7 +147,7 @@
 
          
 
-          <div class="position-relative form-group"><label >Image </label><input name="file" id="exampleFile" 
+          <div class="position-relative form-group"><label >Image: </label><input name="file" id="exampleFile" 
             type="file" class="form-control-file"  [(ngModel)]="room.file"  [ngClass]="{ 'is-invalid': submitted && u.file.errors }" (change)="selectFile($event)">
             <div *ngIf="submitted && u.file.errors" class="invalid-feedback">
               <div *ngIf="u.file.errors.required">image obligatoire</div>
