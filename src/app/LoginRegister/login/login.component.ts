@@ -1,5 +1,5 @@
-import { TokenStorageService } from './../../services/token-storage.service';
-import { AuthService } from './../../services/auth.service';
+import { TokenStorageService } from '../../_services/token-storage.service';
+import { AuthService } from '../../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -47,13 +47,13 @@ export class LoginComponent implements OnInit {
         this.roles = this.tokenStorage.getUser().roles;
        // this.reloadPage();
        if(this.tokenStorage.getUser().roles=="ROLE_ADMIN"  ){
-        this.router.navigate(['gestionUser']);
+        this.router.navigate(['dashboard']);
        }else if(this.tokenStorage.getUser().roles=="ROLE_RECEPTION"  )
        {
-        this.router.navigate(['register']);
+        this.router.navigate(['gestionReception']);
        }
-      else 
-      this.router.navigate(['home']);
+      else if(this.tokenStorage.getUser().roles=="ROLE_CLIENT")
+      this.router.navigate(['forbidden']);
    
       },
       err => {

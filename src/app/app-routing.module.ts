@@ -1,3 +1,11 @@
+import { UpdateActivityComponent } from './Admin/update-activity/update-activity.component';
+import { DashboardComponent } from './Admin/dashboard/dashboard.component';
+import { GestionReceptionComponent } from './Admin/gestion-reception/gestion-reception.component';
+import { GestionReservationComponent } from './Admin/gestion-reservation/gestion-reservation.component';
+import { ForbiddenComponent } from './LoginRegister/forbidden/forbidden.component';
+import { ProfileComponent } from './Admin/profile/profile.component';
+import { GestionActivityComponent } from './Admin/gestion-activity/gestion-activity.component';
+import { UpdateRoomComponent } from './Admin/update-room/update-room.component';
 import { GestionRoomComponent } from './Admin/gestion-room/gestion-room.component';
 import { RegisterComponent } from './LoginRegister/register/register.component';
 
@@ -72,11 +80,24 @@ const routes: Routes = [
 
       // Elements
       
-      { path: 'register', component: RegisterComponent },
+    
+
       {path: 'gestionUser', component: GestionUserComponent },
+      {path: 'gestionReception', component: GestionReceptionComponent},
+
       {path: 'updateUser/:id', component: UpdateUserComponent},
+      {path: 'updateRoom/:id', component: UpdateRoomComponent},
+      {path: 'updateActivity/:id', component: UpdateActivityComponent},
+
 
       {path: 'gestionRoom', component: GestionRoomComponent, data: {extraParameter: 'elementsMenu'}},
+      {path: 'gestionActivity', component: GestionActivityComponent, data: {extraParameter: 'elementsMenu'}},
+      {path: 'gestionReservation', component: GestionReservationComponent, data: {extraParameter: 'elementsMenu'}},
+      {path: 'profile', component: ProfileComponent, data: {extraParameter: 'elementsMenu'}},
+      {path: 'dashboard', component: DashboardComponent, data: {extraParameter: 'elementsMenu'}},
+
+
+
 
       {path: 'elements/buttons-standard', component: StandardComponent, data: {extraParameter: 'elementsMenu'}},
       {path: 'elements/dropdowns', component: DropdownsComponent, data: {extraParameter: 'elementsMenu'}},
@@ -123,7 +144,8 @@ const routes: Routes = [
       // User Pages
       { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-
+      { path: 'register', component: RegisterComponent ,  data: {extraParameter: ''}},
+      { path: 'forbidden', component: ForbiddenComponent  ,  data: {extraParameter: ''}},
       { path: 'login', component: LoginComponent,  data: {extraParameter: ''}},
       { path: 'register', component: RegisterComponent ,  data: {extraParameter: ''}},
 

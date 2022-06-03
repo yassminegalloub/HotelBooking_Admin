@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from 'src/app/models/User';
+import { User } from 'src/app/_models/User';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: 'app-update-user',
@@ -42,6 +42,7 @@ export class UpdateUserComponent implements OnInit {
   }
   reloadPage(): void {
     window.location.reload();
+
   }
 
   onReset() {

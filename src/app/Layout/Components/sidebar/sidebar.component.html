@@ -13,12 +13,49 @@
   </div>
   <div class="app-sidebar-content">
     <div class="app-sidebar-scroll">
-      <perfect-scrollbar [autoPropagation]="true">
         <div class="v-sidebar-menu vsm-default">
           <div class="vsm-list">
             <!-- <ngb-accordion [destroyOnHide]="false" [closeOthers]="true" [activeIds]="extraParameter"> -->
            
             <!-- </ngb-accordion> -->
+            <div class="vsm-header" *ngIf="showAdminBoard">TABLEAU DE BORD</div>
+            <div class="vsm-item" *ngIf="showAdminBoard">
+              <a routerLink="/dashboard" routerLinkActive="active-item" class="vsm-link">
+                <i class="vsm-icon pe-7s-graph2"></i>
+                <span class="vsm-title">Tableau de bord</span>
+              </a>
+             
+            </div>
+     
+    
+    
+           
+            <div class="vsm-header">RESERVATION</div>
+      
+                 
+            <button  class="vsm-link">
+              <i class="vsm-icon pe-7s-note2"></i>
+              <span class="vsm-title">Gestion des Réservation</span>
+              <i class="vsm-arrow"></i>
+            </button>
+        
+            <div class="vsm-dropdown">
+              <div class="vsm-list">
+                <div class="vsm-item">
+                  <a routerLinkActive="" routerLink="/gestionReservation"
+                     class="vsm-link" > <span
+                    class="vsm-title">Liste des reservations</span></a>
+                </div>
+               
+                <!-- <div class="vsm-item" *ngIf="showAdminBoard">
+                  <a routerLinkActive="" routerLink="/"
+                     class="vsm-link"> <span
+                    class="vsm-title">Modifier des reservation</span></a>
+                </div> -->
+               
+              </div>
+            </div>
+
           
 
                
@@ -40,12 +77,19 @@
                      class="vsm-link"> <span
                     class="vsm-title">Liste des utilisateurs</span></a>
                 </div>
+                <!-- <div class="vsm-item">
+                  <a routerLink="/gestionReception"
+                  routerLinkActive="active-item"
+                                               [routerLinkActiveOptions]="{exact: true}"
+                     class="vsm-link"  *ngIf="showAdminBoard"> <span
+                    class="vsm-title">Liste des Receptions</span></a>
+                </div> -->
                
                 <div class="vsm-item">
                   <a   routerLinkActive="active-item"
                    routerLink="/updateUser/:id"
-                     class="vsm-link"> <span
-                    class="vsm-title">Modifier des chambres</span></a>
+                     class="vsm-link" *ngIf="showAdminBoard"> <span
+                    class="vsm-title">Modifier des utilisateurs</span></a>
                 </div>
                
               </div>
@@ -53,9 +97,8 @@
 
 
             <div class="vsm-header">CHAMBRES</div>
-      
         
-                  <button  class="vsm-link">
+                  <button   class="vsm-link">
                     <i class="vsm-icon pe-7s-key"></i>
                     <span class="vsm-title">Gestion des chambres</span>
                     <i class="vsm-arrow"></i>
@@ -71,30 +114,44 @@
                      
                       <div class="vsm-item">
                         <a routerLinkActive="" routerLink="/"
-                           class="vsm-link"> <span
+                           class="vsm-link" > <span
                           class="vsm-title">Modifier des chambres</span></a>
                       </div>
                      
                     </div>
                   </div>
+              <div  >
+                  <div class="vsm-header">ACTIVITES</div>
+      
+                 
+                  <button  class="vsm-link">
+                    <i class="vsm-icon pe-7s-note2"></i>
+                    <span class="vsm-title">Gestion des activité</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+              
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLinkActive="" routerLink="/gestionActivity"
+                           class="vsm-link"> <span
+                          class="vsm-title">Liste des activités</span></a>
+                      </div>
+                     
+                      <div class="vsm-item">
+                        <a routerLinkActive="" routerLink="/updateActivity/:id"
+                           class="vsm-link"  > <span
+                          class="vsm-title">Modifier des activités</span></a>
+                      </div>
+                     
+                    </div>
+                  </div>
 
+                </div>
+               
 
-
-
-            <div class="vsm-header">PRODUITS ET CATALOGUES</div>
-            <div class="vsm-item">
-              <a routerLink="" routerLinkActive="active-item" class="vsm-link">
-                <i class="vsm-icon pe-7s-graph2"></i>
-                <span class="vsm-title">Gestion des produits</span>
-              </a>
-              <a routerLink="/"  class="vsm-link">
-                <i class="vsm-icon pe-7s-graph2"></i>
-                <span class="vsm-title">Gestion des catalogues</span>
-              </a>
-            </div>
           </div>
         </div>
-      </perfect-scrollbar>
     </div>
   </div>
 </div>

@@ -1,0 +1,357 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <div class="page-title-actions">
+      <button type="button" class="btn-shadow mr-3 btn btn-dark">
+        <fa name="star"></fa>
+      </button>
+      <!-- <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success" data-toggle="modal" data-target="#exampleModal"  (click)="openModal(Ajout)">
+        <fa class="mr-2" name="plus"></fa>
+       Ajouter Réservation
+      </button> -->
+      <div class="mb-2 mr-2 btn-group" ngbDropdown>
+        <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+        (click)="openModal(Ajout)">
+          <fa class="mr-2" name="plus"></fa>Ajouter Reservation
+        </button>
+        <!-- <button type="button" ngbDropdownToggle class="dropdown-toggle-split btn btn-success"><span
+            class="sr-only">Toggle Dropdown</span>
+        </button> -->
+        <!-- <div ngbDropdownMenu> -->
+          <!-- <button type="button" class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
+            (click)="openModal(Ajout)">Reservation client déjà existe</button> -->
+          <!-- <button type="button" class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
+            (click)="openModal(AjoutClient)">Reservation de nouveaux clients </button> -->
+
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-card mb-3 card">
+
+  <div class="table-responsive">
+    <table class="align-middle text-truncate mb-0 table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th class="text-center">id Reservation</th>
+          <th class="text-center">Numero chambre</th>
+
+          <th class="text-center">Id Client</th>
+          <th class="text-center">Nom Client</th>
+
+          <th class="text-center">Id Activity</th>
+          <th class="text-center">Nombre d'Adulte</th>
+          <th class="text-center">Nombre d'Enfant</th>
+
+          <th class="text-center">date d'arrivéé</th>
+          <th class="text-center">date de départ</th>
+
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let reservation of reservations | paginate:{itemsPerPage:6, currentPage:p};  ">
+        <tr>
+          <td class="text-center text-muted" style="width: 80px;">{{reservation.id}}</td>
+          <td class="text-center text-muted" style="width: 80px;">{{reservation.room}}</td>
+
+
+          <td class="text-center text-muted" style="width: 80px;">{{reservation.user}}</td>
+          <td class="text-center text-muted" style="width: 80px;">{{reservation.name}}</td>
+
+          <td class="text-center text-muted" style="width: 80px;">{{reservation.activity}}</td>
+
+
+          <td class="text-center"><a [routerLink]="">{{reservation.adult_number}}</a></td>
+          <td class="text-center"><a [routerLink]="">{{reservation.enfant_number}}</a></td>
+
+
+          <td class="text-center"><a [routerLink]="">{{reservation.arrival | date:'yyyy-MM-dd'}}</a></td>
+          <td class="text-center"><a [routerLink]="">{{reservation.departure | date:'yyyy-MM-dd'}}</a></td>
+
+
+          <td class="text-center">
+        
+            
+  
+            <div role="group" class="btn-group-sm btn-group">
+          
+              <button class="mr-2 border-1 btn-transition btn btn-outline-success "  placement="bottom" ngbTooltip="Confirmer Reservation"
+              [disabled] ="reservation.is_reserved == true" (click)="confirmerReservation(reservation.id)">
+                <i class="fa fa-check"></i>
+              </button>
+       
+          
+              <button type="button" class="mr-2 btn-icon btn-icon-only btn btn-success" placement="bottom"
+                ngbTooltip="update" (click)="updateReservation(reservation.id)" > <i class="pe-7s-note2
+              btn-icon-wrapper"> </i></button>
+              <button class="mr-2 btn-icon btn-icon-only btn btn-danger" placement="bottom" ngbTooltip="delete"
+                (click)="deleteReservation(reservation.id)">
+                <i class="pe-7s-trash btn-icon-wrapper"> </i>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="text-center">
+    <pagination-controls class="paginate" style="color: blue;" (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+
+
+<ng-template #Ajout>
+
+  <div class="content-content">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <div class="card m-3">
+      <h5 class="card-header">Create Reservation Client</h5>
+      <div class="card-body">
+
+        <form [formGroup]="registerFormUser" (ngSubmit)="onSubmit()">
+
+          <div class="form-group col-12">
+            <div class="position-relative form-group"><label>
+                Numero chambre:</label><select type="select" id="exampleCustomMutlipleSelect" name="room"
+                class="custom-select" (change)="changeRoom($event)" formControlName="room">
+                <option  value="">Select numero chambre:</option>
+                <option *ngFor="let room of rooms  " [value]="room.id">{{room.id}}</option>
+
+              </select></div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Nombre d'adulte</label>
+                <input type="number" formControlName="adult_number" placeholder="Enter nombre d'adulte"
+                  name="adult_number" class="form-control" [(ngModel)]="reservation.adult_number"
+                  [ngClass]="{ 'is-invalid': submitted && u.adult_number.errors }" />
+                <div *ngIf="submitted && u.adult_number.errors" class="invalid-feedback">
+                  <div *ngIf="u.adult_number.errors.required">nombre d'adulte obligatoire</div>
+                </div>
+              </div>
+
+              <div class="form-group col-6">
+                <label>Nombre d'enfant</label>
+                <input type="number" formControlName="enfant_number" placeholder="Enter nombre d'adulte"
+                  name="enfant_number" class="form-control" [(ngModel)]="reservation.enfant_number"
+                  [ngClass]="{ 'is-invalid': submitted && u.enfant_number.errors }" />
+                <div *ngIf="submitted && u.enfant_number.errors" class="invalid-feedback">
+                  <div *ngIf="u.enfant_number.errors.required">nombre d'enfant obligatoire</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <div class="position-relative form-group"><label for="exampleCustomSelect">Choisir
+                  l'activité</label><select type="select" id="exampleCustomSelect" name="activity" class="custom-select"
+                  (change)="changeActivity($event)">
+                  <option value="">Select activity</option>
+
+                  <option *ngFor="let activity of activities " [value]="activity.id">{{activity.name}}</option>
+
+                </select></div>
+
+            </div>
+            <div class="form-group col-6">
+              <div class="position-relative form-group"><label for="exampleCustomSelect"> Nom de Client</label><select
+                  type="select" id="exampleCustomSelect" name="user" class="custom-select"
+                  (change)="changeUser($event)">
+                  <option  value="">Select user</option>
+                  <option  *ngFor="let user  of users " [value]="user.id">{{user.username}}</option>
+
+                </select></div>
+
+            </div>
+          </div>
+          <div class="form-group col-12">
+            <label>Date d'arrivée</label>
+            <input type="date" formControlName="arrival" name="arrival" class="form-control"
+              [(ngModel)]="reservation.arrival" [ngClass]="{ 'is-invalid': submitted && u.arrival.errors }" />
+            <div *ngIf="submitted && u.arrival.errors" class="invalid-feedback">
+              <div *ngIf="u.arrival.errors.required">Date d'arrivée obligatoire</div>
+            </div>
+          </div>
+
+          <div class="form-group col-12">
+            <label>Date de départ</label>
+            <input type="date" formControlName="departure" name="departure" class="form-control"
+              [(ngModel)]="reservation.departure" [ngClass]="{ 'is-invalid': submitted && u.departure.errors }" />
+            <div *ngIf="submitted && u.departure.errors" class="invalid-feedback">
+              <div *ngIf="u.departure.errors.required">Date de départ obligatoire</div>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button class="btn btn-primary mr-1"> Sauvegarder</button>
+            <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</ng-template>
+
+
+
+<ng-template #AjoutClient>
+
+  <div class="content-content">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <div class="card m-3">
+      <h5 class="card-header">Create Reservation Client</h5>
+      <div class="card-body">
+
+      <form [formGroup]="registerFormUser" (ngSubmit)="AjoutReservation()">
+        <h5 class="form-title"><span>Information Reservation</span></h5> 
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <div class="position-relative form-group"><label>
+                Numero chambre:</label><select type="select" id="exampleCustomMutlipleSelect" name="room"
+                class="custom-select" (change)="changeRoom($event)" formControlName="room">
+                <option disabled>Select numero chambre:</option>
+                <option *ngFor="let room of rooms  " [value]="room.id">{{room.id}}</option>
+
+              </select></div></div>
+
+              <div class="form-group col-6">
+                <div class="position-relative form-group"><label for="exampleCustomSelect">Choisir
+                    l'activité</label><select type="select" id="exampleCustomSelect" name="activity" class="custom-select"
+                    (change)="changeActivity($event)">
+                    <option value="">Select activity</option>
+  
+                    <option *ngFor="let activity of activities " [value]="activity.id">{{activity.name}}</option>
+  
+                  </select></div>
+              </div>
+
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label>Date d'arrivée</label>
+            <input type="date" formControlName="arrival" name="arrival" class="form-control"
+              [(ngModel)]="reservation.arrival" [ngClass]="{ 'is-invalid': submitted && u.arrival.errors }" />
+            <div *ngIf="submitted && u.arrival.errors" class="invalid-feedback">
+              <div *ngIf="u.arrival.errors.required">Date d'arrivée obligatoire</div>
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label>Date de départ</label>
+            <input type="date" formControlName="departure" name="departure" class="form-control"
+              [(ngModel)]="reservation.departure" [ngClass]="{ 'is-invalid': submitted && u.departure.errors }" />
+            <div *ngIf="submitted && u.departure.errors" class="invalid-feedback">
+              <div *ngIf="u.departure.errors.required">Date de départ obligatoire</div>
+            </div>
+          </div>
+        </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Nombre d'adulte</label>
+                <input type="number" formControlName="adult_number" placeholder="Enter nombre d'adulte"
+                  name="adult_number" class="form-control" [(ngModel)]="reservation.adult_number"
+                  [ngClass]="{ 'is-invalid': submitted && u.adult_number.errors }" />
+                <div *ngIf="submitted && u.adult_number.errors" class="invalid-feedback">
+                  <div *ngIf="u.adult_number.errors.required">nombre d'adulte obligatoire</div>
+                </div>
+              </div>
+
+              <div class="form-group col-6">
+                <label>Nombre d'enfant</label>
+                <input type="number" formControlName="enfant_number" placeholder="Enter nombre d'adulte"
+                  name="enfant_number" class="form-control" [(ngModel)]="reservation.enfant_number"
+                  [ngClass]="{ 'is-invalid': submitted && u.enfant_number.errors }" />
+                <div *ngIf="submitted && u.enfant_number.errors" class="invalid-feedback">
+                  <div *ngIf="u.enfant_number.errors.required">nombre d'enfant obligatoire</div>
+                </div>
+              </div>
+            </div>
+      <div class="form-row">
+         <div class="form-group col-6">
+          <label> Nom </label>
+          <input type="text" formControlName="name" placeholder=" Enter name" name="name" class="form-control" [(ngModel)]="user1.name"
+            [ngClass]="{ 'is-invalid': submitted && u.name.errors }" />
+          <div *ngIf="submitted && u.name.errors" class="invalid-feedback">
+            <div *ngIf="u.name.errors.required">Nom obligatoire</div>
+          </div>
+        </div> 
+   
+        <div class="form-group col-6">
+          <label>Email</label>
+          <input type="text " formControlName="email" placeholder="Enter email" name="email" class="form-control" [(ngModel)]="user1.email"
+            [ngClass]="{ 'is-invalid': submitted && u.email.errors }" />
+          <div *ngIf="submitted && u.email.errors" class="invalid-feedback">
+            <div *ngIf="u.email.errors.required">email obligatoire</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label>Username</label>
+
+          <div class="input-group">
+         <div class="input-group-prepend"><span class="input-group-text">@</span></div>
+         <input type="text" class="form-control" formControlName="username" name="username" placeholder="username"  [(ngModel)]="user1.username" 
+         [ngClass]="{ 'is-invalid': submitted && u.username.errors }" />
+         <div *ngIf="submitted && u.username.errors" class="invalid-feedback">
+           <div *ngIf="u.username.errors.required">username obligatoire</div>
+         </div>
+       </div>
+       </div>
+
+        <div class="form-group col-6">
+          <label>Password</label>
+          <input type="password" formControlName="password" placeholder="Enter password" name="password" class="form-control" [(ngModel)]="user1.password" 
+            [ngClass]="{ 'is-invalid': submitted && u.password.errors }" />
+          <div *ngIf="submitted && u.password.errors" class="invalid-feedback">
+            <div *ngIf="u.password.errors.required">password obligatoire</div>
+          </div>
+        </div>
+      </div>
+          <!-- <div class="form-row">
+            <div class="form-group col-6">
+              <div class="position-relative form-group"><label for="exampleCustomSelect"> Nom de Client</label><select
+                  type="select" id="exampleCustomSelect" name="user" class="custom-select"
+                  (change)="changeUser($event)">
+                  <option value="">Select user</option>
+                  <option *ngFor="let user  of users " [value]="user.id">{{user.username}}</option>
+
+                </select></div>
+
+            </div>
+          </div> -->
+       
+
+          <div class="text-center">
+            <button class="btn btn-primary mr-1"> Sauvegarder</button>
+            <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</ng-template>

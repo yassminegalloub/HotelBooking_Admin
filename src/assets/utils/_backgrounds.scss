@@ -5,13 +5,15 @@
 }
 
 .bg-night-fade {
-  background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%) !important;
+  background-image: linear-gradient(to top, #f7b250 0%, #eb7b61 100%) !important;
 }
 
 .bg-sunny-morning {
   background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%) !important;
 }
-
+.bg-plum-plat {
+  background-image: linear-gradient(135deg, #6690a7 0%, #764ba2 100%) !important;
+}
 .bg-tempting-azure {
   background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%) !important;
 }
@@ -73,7 +75,7 @@
 }
 
 .bg-premium-dark {
-  background-image: linear-gradient(to right, #434343 0%, black 100%) !important;
+  background-image: linear-gradient(to right, #c460eb 0%, rgb(70, 99, 213) 100%) !important;
 }
 
 .bg-happy-green {

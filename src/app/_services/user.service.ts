@@ -1,7 +1,8 @@
+import { Role } from './../_models/Role';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { User } from '../models/User';
+import { User } from '../_models/User';
 import { TokenStorageService } from './token-storage.service';
 const AUTH_API = 'http://localhost:8080/api/auth/';
 
@@ -38,18 +39,28 @@ export class UserService {
   return this.roleAs;
   }
   
-    createUser(User: Object): Observable<Object> {
-      return this.http.post(`${this.baseUrl}/newUser/`, User);
+    createReception(User: Object): Observable<Object> {
+      return this.http.post(`${this.baseUrl}/newReception/`, User);
     }
+    createUser(User: Object): Observable<Object> {
+      return this.http.post(`${this.baseUrl}/newClient/`, User);
+    }
+  
   
     getUser(): Observable<any> {
       return this.http.get(AUTH_API + 'allUsers')
+    }
+    getReception(): Observable<any> {
+      return this.http.get(AUTH_API + 'allReception')
     }
     //method pour recupére tous les roles
     getRole(): Observable<any> {
       return this.http.get(AUTH_API + 'allRoles')
     }
   
+    nbrUser(): Observable<any> {
+      return this.http.get(AUTH_API + 'nbrUser')
+    }
   
     deleteUser(id: number): Observable<any> {
       return this.http.delete(`${this.baseUrl}/DeleteUser/${id}`, { responseType: 'text' });
@@ -59,6 +70,11 @@ export class UserService {
     }
   
     updateUser(id: number, value: any): Observable<Object> {
-      return this.http.post(`${this.baseUrl}/editUser/${id}`, value);
+      return this.http.put(`${this.baseUrl}/editUser/${id}`, value);
     }
+    updatePassword(id: number, value:any):  Observable<Object>{
+      return this.http.post(`${this.baseUrl}/editPasswordUser/${id}`, value);
+
+    }
+   
 }

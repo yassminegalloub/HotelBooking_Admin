@@ -1,0 +1,158 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div
+          class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+<div class="page-wrapper">
+  <div class="content container-fluid">
+
+    <div class="card main-card mb-3">
+      <div class="col-lg-6">
+      <div class="card-body">
+        <ngb-tabset>
+          <ngb-tab title="Information Compte">
+            <ng-template ngbTabContent>
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title d-flex justify-content-between">
+                    <span>
+                      Détails personnels</span>
+                   
+                       <button type="button" class="btn btn-primary" *ngIf="!showAdminBoard" data-toggle="modal" data-target="#exampleModal"  (click)="openModal(Ajout)"><i class="fa fa-edit mr-1"></i>Éditer</button>
+                    </h5>
+                  <div class="row mt-5">
+                    <p class="col-sm-3 text-sm-right mb-0 mb-sm-3">Nom </p>
+                    <p class="col-sm-9">{{ currentUser.name }}</p>
+                  </div>
+                 
+                  <div class="row">
+                    <p class="col-sm-3 text-sm-right mb-0 mb-sm-3">Email ID: </p>
+                    <p class="col-sm-9"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="caaeabbca3aeaba6bcabb8afb08aafb2aba7baa6afe4a9a5a7">{{ currentUser.email }}</a></p>
+                  </div>
+                  <div class="row">
+                    <p class="col-sm-3 text-sm-right mb-0 ">Nom d'utilisateur: </p>
+                    <p class="col-sm-9">{{ currentUser.username }}</p>
+                  </div>
+                  <div class="row">
+                    <p class="col-sm-3 text-sm-right mb-0 mb-sm-3">Role: </p>
+                    <p class="col-sm-9" *ngFor="let role of currentUser.roles">{{role}}</p>
+                  </div>
+                  <ng-template #Ajout>
+                
+                    <div class="content-content">
+                      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <!-- main app container -->
+                      <div class="card m-3">
+                        <h5 class="card-header">Modifier Profile</h5>
+                        <div class="card-body">
+                          <form  (ngSubmit)="updateUser()" >
+                            <div class="form-group col-12">
+                    
+                              <div class="position-relative form-group"><label for="exampleEmail">Nom</label><input name="name" [(ngModel)]="currentUser.name" id="exampleEmail"
+                                 type="text" class="form-control">
+                              </div>
+                              </div>
+                            <div class="form-group col-12">
+                    
+                            <div class="position-relative form-group"><label for="exampleEmail">Email</label><input name="email" [(ngModel)]="currentUser.email" id="exampleEmail"
+                               type="email" class="form-control">
+                            </div>
+                            </div>
+                          <div class="form-group col-12">
+                    
+                            <div class="position-relative form-group"><label for="exampleUsername">Nom d'utilisateur</label>
+                              <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">@</span></div>
+                              <input name="username" [(ngModel)]=" currentUser.username" id="exampleUsername"
+                               type="text" class="form-control">
+                            </div>
+                            </div>
+                            </div>
+                           <div class="form-group col-12">
+                    
+                            <div class="position-relative form-group"><label  for="examplePassword">Mot de passe</label><input
+                                    name="password" [(ngModel)]="currentUser.password" placeholder="Entrer votre mot de passe" id="examplePassword"  type="password"
+                                    class="form-control"></div>
+                           </div>
+                            
+                              <small class="form-text text-muted">
+                              </small>
+                              
+                            <button class="btn-wide mb-2 mr-2 btn btn-primary btn-lg">Enregistrer</button>
+                            <button class="btn-wide mb-2 mr-2 btn btn-danger btn-lg" type="reset" (click)="onReset()"> Annuler</button>
+                        
+                          </form>
+                        </div>
+                      </div>
+                      
+                    </div>
+                          
+                  </ng-template>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab>
+            <ng-template ngbTabTitle>Mot de passe</ng-template>
+            <ng-template ngbTabContent>
+              <!-- <div  >
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Change Password</h5>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <form [formGroup]="registerFormUser" (ngSubmit)="ChangePassword()">
+                          <div class="form-group">
+                            <label>Old Password</label>
+                            <input type="password" class="form-control" formControlName="password"  name="password"  [(ngModel)]="user1.password"  [ngClass]="{ 'is-invalid': submitted && u.password.errors }" >
+                            <div *ngIf="submitted && u.password.errors" class="invalid-feedback">
+                              <div *ngIf="u.password.errors.required">password obligatoire</div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" class="form-control" formControlName="newpassword" name="newpassword"  [(ngModel)]="user1.password"  [ngClass]="{ 'is-invalid': submitted && u.newpassword.errors }" >
+                            <div *ngIf="submitted && u.newpassword.errors" class="invalid-feedback">
+                              <div *ngIf="u.newpassword.errors.required">password obligatoire</div>
+                            </div>
+                           </div>
+                          <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" class="form-control" formControlName="confirmpassword" name="confirmpassword"  [(ngModel)]="user1.password"  [ngClass]="{ 'is-invalid': submitted && u.confirmpassword.errors }" > 
+                            <div *ngIf="submitted && u.confirmpassword.errors" class="invalid-feedback">
+                              <div *ngIf="u.confirmpassword.errors.required">password obligatoire</div>
+                              <div *ngIf="u.confirmpassword.errors.MustMatch">password non confirmé</div>
+
+                            </div>
+                          </div>
+                          <button class="btn btn-primary" type="submit">Enregistrer password</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div>-->
+            </ng-template>
+          </ngb-tab>
+         
+        </ngb-tabset>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+   

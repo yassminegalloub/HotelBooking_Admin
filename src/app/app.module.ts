@@ -12,6 +12,8 @@ import {LoadingBarRouterModule} from '@ngx-loading-bar/router';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
+import {NgxPaginationModule} from 'ngx-pagination'; 
+
 
 // BOOTSTRAP COMPONENTS
 
@@ -111,6 +113,14 @@ import { UpdateUserComponent } from './Admin/update-user/update-user.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { AdminGuard } from './Guard/admin.guard';
 import { GestionRoomComponent } from './Admin/gestion-room/gestion-room.component';
+import { UpdateRoomComponent } from './Admin/update-room/update-room.component';
+import { GestionActivityComponent } from './Admin/gestion-activity/gestion-activity.component';
+import { ProfileComponent } from './Admin/profile/profile.component';
+import { ForbiddenComponent } from './LoginRegister/forbidden/forbidden.component';
+import { GestionReservationComponent } from './Admin/gestion-reservation/gestion-reservation.component';
+import { UpdateActivityComponent } from './Admin/update-activity/update-activity.component';
+import { GestionReceptionComponent } from './Admin/gestion-reception/gestion-reception.component';
+import { DashboardComponent } from './Admin/dashboard/dashboard.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -206,6 +216,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RegisterComponent,
     UpdateUserComponent,
     GestionRoomComponent,
+    UpdateRoomComponent,
+    GestionActivityComponent,
+    ProfileComponent,
+    ForbiddenComponent,
+    GestionReservationComponent,
+    UpdateActivityComponent,
+    GestionReceptionComponent,
+    DashboardComponent,
   ],
   imports: [
     ModalModule.forRoot(),
@@ -215,6 +233,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgReduxModule,
     CommonModule,
     LoadingBarRouterModule,
+    NgxPaginationModule,
 
     // Angular Bootstrap Components
 

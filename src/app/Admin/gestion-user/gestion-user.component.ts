@@ -1,11 +1,12 @@
-import { UserService } from './../../services/user.service';
+import { UserService } from '../../_services/user.service';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/models/User';
+import { User } from 'src/app/_models/User';
 import { Router } from '@angular/router';
-import { Role } from 'src/app/models/Role';
+import { Role } from 'src/app/_models/Role';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 // import { UserSvService } from '../_services/user-sv.service';
 
 @Component({
@@ -14,8 +15,12 @@ import { Role } from 'src/app/models/Role';
   styleUrls: ['./gestion-user.component.sass']
 })
 export class GestionUserComponent implements OnInit {
+  showAdminBoard = false;
+  showReceptionBoard = false;
+  isLoggedIn = false;
   users: Observable<User[]>;
-  roles: Observable<Role[]>;
+  Roles:Role[];
+  private roles: string[];
 
   user: User= new User();
   registerFormUser: FormGroup;
@@ -23,10 +28,13 @@ export class GestionUserComponent implements OnInit {
   modalRef: any;
   filterString = "";
   filtered;
-  p;
+  p: number = 1;
   dataSource: any;
-
-  constructor(private modalService: BsModalService, private formBuilder: FormBuilder,private userService: UserService, private router: Router ) {
+  heading = 'Liste des Clients';
+  subheading = '';
+  icon = 'pe-7s-user icon-gradient bg-sunny-morning';
+  constructor(private modalService: BsModalService, private formBuilder: FormBuilder,private userService: UserService, private router: Router
+    , private tokenStorageService: TokenStorageService ) {
     this.registerFormUser = this.formBuilder.group({
       name: [null, Validators.required], 
       username: [null, Validators.required],
@@ -36,13 +44,29 @@ export class GestionUserComponent implements OnInit {
   }
 
   ngOnInit() {
+  
     this.reloadData();
-    this.roles= this.userService.getRole();
+  //  this.roles= this.userService.getRole();
+    this.userService.getRole().subscribe(res =>{this.Roles= res})
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.roles;
+    this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
+    this.showReceptionBoard = this.roles.includes('ROLE_RECEPTION');
+    }
+
+
   }
 
   reloadData() {
     this.users= this.userService.getUser();
 
+  }
+  changeRole(e: any) {
+  //  this.role= e.target.value, 
+   // console.log(this.role);
   }
 
  
@@ -66,6 +90,7 @@ export class GestionUserComponent implements OnInit {
   }
 
 
+
   get u() { return this.registerFormUser.controls }
   save() {
     this.userService
@@ -76,9 +101,21 @@ export class GestionUserComponent implements OnInit {
     }, 
     error => console.log(error));
   }
+
+  saveReception() {
+    this.userService
+    .createReception(this.user).subscribe(data => {
+      console.log(data)
+      this.user = new User();
+     
+    }, 
+    error => console.log(error));
+  }
   onSubmit(){
     this.submitted = true;
     this.save();   
+    this.reloadData();
+
     // stop here if form is invalid
     if (this.registerFormUser.invalid) {
         return;
