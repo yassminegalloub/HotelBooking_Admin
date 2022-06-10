@@ -1,0 +1,53 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">Update Room</h5>
+      <form  (ngSubmit)="onSubmit()">
+
+        <div class="form-group col-12">
+          <label> Name Activité</label>
+          <input type="text"   name="name" class="form-control" [(ngModel)]="activity.name"
+             />
+        
+        </div> 
+       
+        <div class="form-group col-12">
+          <label>Date d'ajout: </label>
+          <input type="date"   name="activity_schedule" class="form-control" [(ngModel)]="activity.activity_schedule "
+             />
+         
+        </div> 
+
+        <div class="form-group col-12">
+          <label>Promotion: </label>
+          <input type="number" name="promotion" class="form-control" [(ngModel)]="activity.promotion"/>
+        
+        </div>
+
+       
+
+        <div class="position-relative form-group"><label >File</label>
+          <div style=" text-align: center;" >
+            <img  [src]="url" alt="" width="30px" height="30px" >
+      
+          </div>
+          <input name="file" id="exampleFile" 
+          type="file" class="form-control-file"  [(ngModel)]="activity.fileURL" >
+
+          
+        <small class="form-text text-muted">This is some placeholder block-level help text for the above
+             input. It's a bit lighter and easily wraps to a new line.
+          </small>
+        </div>
+      
+       
+        <div class="text-center">
+          <button class="btn btn-primary mr-1"> Update</button>
+          <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+        </div>
+
+      </form> 
+    </div>
+  </div>
+</div>
+
+

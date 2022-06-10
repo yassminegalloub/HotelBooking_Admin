@@ -1,0 +1,49 @@
+<div class="col-md-9">
+  <div class="main-card mb-3 card">
+    <h5 class="card-header">Modifier chambre</h5>
+    
+    <div class="card-body">
+      <form  (ngSubmit)=" updateRoom()">
+
+        <div class="form-group col-12">
+          <label> Nom de chambre</label>
+          <input type="text"  placeholder=" Enter name" name="name_room" class="form-control" [(ngModel)]="room.name_room" />
+        
+        </div> 
+       
+        <div class="form-group col-12">
+          <label>Détails</label>
+          
+          <input type="text"  placeholder="Details" name="details" class="form-control" [(ngModel)]="room.details"
+             />
+         
+        </div> 
+
+        <div class="form-group col-12">
+          <label>Prix</label>
+          <input type="number"  placeholder="Enter Price" name="price" class="form-control" [(ngModel)]="room.price"/>
+        
+        </div>
+
+       
+
+        <div class="position-relative form-group"><label >Image</label>
+          <div style=" text-align: center;" >
+            <img  name="file" [src]="room.fileURL" alt="" width="100px" height="100px" >
+      
+          </div>  
+          <input  id="exampleFile" 
+          type="file" class="form-control-file"  [(ngModel)]="room.file" >
+        </div>
+      
+       
+        <div class="text-center">
+          <button class="btn btn-primary mr-1"> Modifier</button>
+          <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+        </div>
+
+      </form> 
+    </div>
+  </div>
+</div>
+

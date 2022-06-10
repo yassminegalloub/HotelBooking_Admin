@@ -1,0 +1,242 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div
+          class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <div class="page-title-actions">
+      
+      <button type="button" class="btn-shadow mr-3 btn btn-dark">
+        <fa name="star"></fa>
+      </button>
+      <!-- <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success" data-toggle="modal" data-target="#exampleModal"  (click)="openModal(template)">
+        <fa class="mr-2" name="plus"></fa>
+        New Client
+      </button> -->
+
+      <div class="mb-2 mr-2 btn-group" ngbDropdown>
+        <button class="btn btn-success">
+          <fa class="mr-2" name="plus"></fa>Ajouter Utilisateur
+        </button>
+        <button type="button" ngbDropdownToggle class="dropdown-toggle-split btn btn-success"><span
+            class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div ngbDropdownMenu>
+          <button type="button" class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
+            (click)="openModal(template)">Ajouter client</button>
+          <button type="button" class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
+            (click)="openModal(AjoutReception)" *ngIf="showAdminBoard">Ajouter Reception </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div   style="margin-top: 20px;"  >
+ <div class="main-card mb-3 card">
+   <div class="card-header">
+    <div class="col-sm">
+      <input type="search" class=" rounded"   style="margin-top: 20px;margin-left: 20px;"  [(ngModel)]="filterString" (ngModelChange)="onFilterChange()" placeholder="Recherche" aria-label="Search" aria-describedby="search-addon" />
+      </div> 
+   </div>
+   <div class="table-responsive">
+     <table  class="align-middle mb-0 table table-borderless table-striped table-hover">
+      <thead >
+       <tr>
+        <th class="text-center">Id</th>
+        <th class="text-center">Nom</th>
+        <th class="text-center">Nom d'utilisateur</th>
+        <th class="text-center">Email</th>
+        <th class="text-center">Role</th>
+        <th class="text-center" *ngIf="showAdminBoard">Action</th>
+       </tr>
+      </thead>
+
+      <tbody  *ngFor="let user of users |  async | paginate:{itemsPerPage:6, currentPage:p}; ">
+       <tr >
+        <td class="text-center">{{user.id}}</td>
+        <td class="text-center">{{user.name}}</td>
+        <td class="text-center">{{user.username}}</td>
+        <td class="text-center">{{user.email}}</td>
+        <td class="text-center"  *ngFor="let x of user.roles">{{x.name}}</td>
+        <td class="text-center">
+           <button type="button" class="mr-2 btn-icon btn-icon-only btn btn-success" placement="bottom"
+           ngbTooltip="update" (click)="updateUser(user.id)" *ngIf="showAdminBoard"> <i class="pe-7s-note2
+            btn-icon-wrapper"> </i></button>
+            <button class="mr-2 btn-icon btn-icon-only btn btn-danger" placement="bottom"
+            ngbTooltip="delete" (click)="deleteUser(user.id)" *ngIf="showAdminBoard"   >
+            <i class="pe-7s-trash btn-icon-wrapper"> </i>
+           </button>
+        </td>
+      </tr>
+      </tbody>
+     </table>
+    
+   </div>
+  
+
+ </div>
+    <div class="text-center">
+         <pagination-controls class="paginate" style="color: blue;" (pageChange)="p = $event"></pagination-controls>
+    </div>
+ </div>
+
+<!--Pagination-->
+ 
+
+<!--Ajout user-->
+<ng-template #template>
+
+  <div class="content-content">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- main app container -->
+    <div class="card m-3">
+      <h5 class="card-header">Ajouter Client </h5>
+      <div class="card-body">
+        <form [formGroup]="registerFormUser" (ngSubmit)="onSubmit()">
+
+          <div class="form-group col-12">
+            <label> Nom </label>
+            <input type="text" formControlName="name" placeholder=" Entrer name" name="name" class="form-control" [(ngModel)]="user.name"
+              [ngClass]="{ 'is-invalid': submitted && u.name.errors }" />
+
+            <div *ngIf="submitted && u.name.errors" class="invalid-feedback">
+              <div *ngIf="u.name.errors.required">Nom obligatoire</div>
+            </div>
+          </div> 
+     
+          <div class="form-group col-12">
+            <label>Email</label>
+            <input type="text " formControlName="email" placeholder="Entrer l'email" name="email" class="form-control" [(ngModel)]="user.email"
+              [ngClass]="{ 'is-invalid': submitted && u.email.errors }" />
+            <div *ngIf="submitted && u.email.errors" class="invalid-feedback">
+              <div *ngIf="u.email.errors.required">email obligatoire</div>
+            </div>
+          </div>
+
+          <div class="form-group col-12">
+            <label>Nom d'utilisateur</label>
+
+            <div class="input-group">
+           <div class="input-group-prepend"><span class="input-group-text">@</span></div>
+           <input type="text" class="form-control" formControlName="username" name="username" placeholder="Entrer le nom d'utilisateur"  [(ngModel)]="user.username" 
+           [ngClass]="{ 'is-invalid': submitted && u.username.errors }" />
+           <div *ngIf="submitted && u.username.errors" class="invalid-feedback">
+             <div *ngIf="u.username.errors.required">username obligatoire</div>
+           </div>
+         </div>
+         </div>
+
+          <div class="form-group col-12">
+            <label>Password</label>
+            <input type="password" formControlName="password" placeholder="Entrer le mot de passe" name="password" class="form-control" [(ngModel)]="user.password" 
+              [ngClass]="{ 'is-invalid': submitted && u.password.errors }" />
+            <div *ngIf="submitted && u.password.errors" class="invalid-feedback">
+              <div *ngIf="u.password.errors.required">password obligatoire</div>
+            </div>
+          </div>
+        
+         
+
+          <div class="text-center">
+            <button class="btn btn-primary mr-1"> Enregistrer</button>
+            <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</ng-template>
+    
+
+<ng-template #AjoutReception>
+
+  <div class="content-content">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- main app container -->
+    <div class="card m-3">
+      <h5 class="card-header"> <i style="font-size: 25px; " class="pe-7s-user"></i> Ajouter Administrateur et Reception: </h5>
+      <div class="card-body">
+        <form [formGroup]="registerFormUser" (ngSubmit)="saveReception()">
+
+          <div class="form-group col-12">
+            <label> Nom </label>
+            <input type="text" formControlName="name" placeholder=" Entrer le nom" name="name" class="form-control" [(ngModel)]="user.name"
+              [ngClass]="{ 'is-invalid': submitted && u.name.errors }" />
+            <div *ngIf="submitted && u.name.errors" class="invalid-feedback">
+              <div *ngIf="u.name.errors.required">Nom obligatoire</div>
+            </div>
+          </div> 
+     
+          <div class="form-group col-12">
+            <label>Email</label>
+            <input type="text " formControlName="email" placeholder="Entrer l'email" name="email" class="form-control" [(ngModel)]="user.email"
+              [ngClass]="{ 'is-invalid': submitted && u.email.errors }" />
+            <div *ngIf="submitted && u.email.errors" class="invalid-feedback">
+              <div *ngIf="u.email.errors.required">email obligatoire</div>
+            </div>
+          </div>
+
+          <div class="form-group col-12">
+            <label>Username</label>
+
+            <div class="input-group">
+           <div class="input-group-prepend"><span class="input-group-text">@</span></div>
+           <input type="text" class="form-control" formControlName="username" name="username" placeholder="Entrer le nom d'utilisateur"  [(ngModel)]="user.username" 
+           [ngClass]="{ 'is-invalid': submitted && u.username.errors }" />
+           <div *ngIf="submitted && u.username.errors" class="invalid-feedback">
+             <div *ngIf="u.username.errors.required">username obligatoire</div>
+           </div>
+         </div>
+         </div>
+
+          <div class="form-group col-12">
+            <label>Password</label>
+            <input type="password" formControlName="password" placeholder="Entrer le mot de passe" name="password" class="form-control" [(ngModel)]="user.password" 
+              [ngClass]="{ 'is-invalid': submitted && u.password.errors }" />
+            <div *ngIf="submitted && u.password.errors" class="invalid-feedback">
+              <div *ngIf="u.password.errors.required">password obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group col-12">
+            <div class="position-relative form-group"><label for="exampleCustomSelect"> Select role</label><select
+                type="select" id="exampleCustomSelect" name="user" class="custom-select"
+                (change)="changeRole($event)">
+                <option >Select Role</option>
+                <option *ngFor="let role of Roles" [value]="role.id">{{role.name}}</option>
+
+
+              </select></div>
+
+          </div>
+         
+
+          <div class="text-center">
+            <button class="btn btn-primary mr-1"> Enregistrer</button>
+            <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</ng-template>
+    

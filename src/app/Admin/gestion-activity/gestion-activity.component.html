@@ -1,0 +1,140 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div
+          class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <div class="page-title-actions">
+      <button type="button" class="btn-shadow mr-3 btn btn-dark">
+        <fa name="star"></fa>
+      </button>
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success" data-toggle="modal" data-target="#exampleModal"  (click)="openModal(Ajout)">
+        <fa class="mr-2" name="plus"></fa>
+        Ajouter activité
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="main-card mb-3 card">
+<ul class="list-group list-group-flush">
+  <li class="list-group-item" *ngFor="let activity of activities |  async ">
+    <div class="widget-content p-0">
+      <div class="widget-content-wrapper">
+        <div class="widget-content-left mr-3">
+          <img width="100" height="100" class="rounded" [src]="activity.fileURL" alt="">
+        </div>
+        <div class="widget-content-left">
+          <div class="widget-heading"><label>Nom de l'activité : </label> {{ activity.name}}</div>
+          <div class="widget-subheading"><label>Date d'ajout : </label>{{ activity.activity_schedule | date:'yyyy-MM-dd'}}</div>
+        </div>
+        <div class="widget-content-right text-right mr-3">
+          <div><b>{{activity.promotion}}<small>%</small></b></div>
+          Remise
+        </div>
+        <div class="widget-content-right " *ngIf="activity.available == true">
+          <a  placement="bottom"
+          ngbTooltip="Non disponible!" (click)="updateNotAvailable(activity.id)"><div class="badge badge-pill badge-primary ml-2">Disponible</div></a>
+        </div>
+        <div class="widget-content-right " *ngIf="activity.available == false">
+          <a   placement="bottom"
+          ngbTooltip="Disponible!" (click)="updateAvailable(activity.id)"><div class="badge badge-pill badge-danger ml-2">Non disponible</div></a>
+        </div>
+        <div class="widget-content-right">
+          <div class="d-block text-right card-footer" >
+            <button class="mr-2 btn-icon btn-icon-only btn btn-outline-success" placement="bottom"
+            ngbTooltip="update" (click)="updateActivity(activity.id)">
+              <i class="pe-7s-note2
+              btn-icon-wrapper"></i>
+            </button>
+            <button class=" btn-transition  btn btn-outline-danger" placement="bottom"
+            ngbTooltip="delete" (click)="deleteActivity(activity.id)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+  
+</ul>
+</div>
+</div>
+</div>
+<ng-template #Ajout>
+
+  <div class="content-content">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- main app container -->
+    <div class="card m-3">
+      <h5 class="card-header">Ajouter Activité</h5>
+      <div class="card-body">
+         <form [formGroup]="registerFormUser" (ngSubmit)="onSubmit()">
+
+          <div class="form-group col-12">
+            <label> Nom d'activité: </label>
+            <input type="text" formControlName="name" placeholder=" Entrer name" name="name" class="form-control" [(ngModel)]="activity.name"
+              [ngClass]="{ 'is-invalid': submitted && u.name.errors }" />
+            <div *ngIf="submitted && u.name.errors" class="invalid-feedback">
+              <div *ngIf="u.name.errors.required">Nom obligatoire</div>
+            </div>
+          </div> 
+         
+          <div class="form-group col-12">
+            <label>Date d'ajout: </label>
+            <input type="date" formControlName="activity_schedule"  name="activity_schedule" class="form-control" [(ngModel)]="activity.activity_schedule"
+              [ngClass]="{ 'is-invalid': submitted && u.activity_schedule.errors }" />
+            <div *ngIf="submitted && u.activity_schedule.errors" class="invalid-feedback">
+              <div *ngIf="u.activity_schedule.errors.required">Date obligatoire</div>
+            </div>
+          </div> 
+
+          <div class="form-group col-12">
+            <label>Promotion: </label>
+            <input type="number" formControlName="promotion" placeholder="Entrer Promotion" name="promotion" class="form-control" [(ngModel)]="activity.promotion"
+              [ngClass]="{ 'is-invalid': submitted && u.promotion.errors }" />
+            <div *ngIf="submitted && u.promotion.errors" class="invalid-feedback">
+              <div *ngIf="u.promotion.errors.required">promotion obligatoire</div>
+            </div>
+          </div>
+          <div class="form-group col-12">
+            <div class="card-body"><h5 class="card-title">Disponibilité: </h5>
+              <div class="position-relative form-group" >
+                <div>
+                  <div class="custom-radio custom-control"><input type="radio" name="available" id="exampleCustomRadio"   class="custom-control-input" >
+                        <label class="custom-control-label">Activité disponible</label></div>
+       
+                  <div class="custom-radio custom-control"><input type="radio" name="available" id="exampleCustomRadio2"  disabled="disabled" class="custom-control-input" >
+                    <label class="custom-control-label">Activités non disponible</label></div>
+                </div>
+              </div>
+            </div>
+         </div>
+         <div class="form-group col-12">
+          <div class="position-relative form-group"><label >Image</label><input name="file" id="exampleFile" 
+            type="file" class="form-control-file"  [(ngModel)]="activity.file"  [ngClass]="{ 'is-invalid': submitted && u.file.errors }" (change)="selectFile($event)">
+            <div *ngIf="submitted && u.file.errors" class="invalid-feedback">
+              <div *ngIf="u.file.errors.required">Image obligatoire</div>
+            </div>
+          </div>
+        </div>
+          <div class="text-center">
+            <button class="btn btn-primary mr-1"> Enregistrer</button>
+            <button class="btn btn-danger mr-1" type="reset" (click)="onReset()"> Annuler</button>
+          </div>
+        </form> 
+      </div>
+    </div>
+  </div>
+</ng-template>
